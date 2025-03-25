@@ -4,9 +4,10 @@ import AuthorModel from "./AuthorModels";
 
 class FilmModel extends Model {
   id_film: number | undefined;
-  titulo: string | undefined;
-  descricao: Text | undefined;
-  ano: number | undefined;
+  title: string | undefined;
+  description: Text | undefined;
+  year: number | undefined;
+  gender: string | undefined;
   authorId: number | undefined;
 }
 
@@ -51,6 +52,6 @@ FilmModel.belongsTo(AuthorModel, {
 });
 AuthorModel.hasMany(FilmModel, {
   foreignKey: "authorId",
-  as: "author",
+  as: "films",
 });
 export default FilmModel;
