@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
 
 class AuthorModel extends Model {
   id_author: number | undefined;
@@ -25,8 +25,8 @@ AuthorModel.init(
   },
   {
     sequelize,
-    modelName: "AuthorModel",
-    tableName: "Authors",
+    modelName: 'AuthorModel',
+    tableName: 'Authors',
   }
 );
 

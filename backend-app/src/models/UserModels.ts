@@ -1,12 +1,21 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
+import bcrypt from 'bcrypt';
 
 class UserModel extends Model {
   id_user: number | undefined;
   name: string | undefined;
   email: string | undefined;
-  password: number | undefined;
+  password: string | undefined;
   cpf: number | undefined;
+
+  public async hashPassword() {
+    this.password = await bcrypt.hash(this.password!, 10);
+  }
+
+  public async validatePassword(password: string): Promise<boolean> {
+    return await bcrypt.compare(password, this.password!);
+  }
 }
 
 UserModel.init(
@@ -27,18 +36,23 @@ UserModel.init(
       unique: true,
     },
     password: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     cpf: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
     },
   },
   {
     sequelize,
-    modelName: "UserModel",
-    tableName: "users",
+    modelName: 'UserModel',
+    tableName: 'users',
   }
 );
+
+UserModel.beforeCreate(async (user: UserModel) => {
+  await user.hashPassword();
+});
+
 export default UserModel;

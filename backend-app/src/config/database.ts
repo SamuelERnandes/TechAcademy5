@@ -1,17 +1,17 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize("streaming", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
+const sequelize = new Sequelize('streaming', 'root', '', {
+  host: 'localhost',
+  dialect: 'mysql',
 });
 
 sequelize
-  .sync({ alter: true })
+  .sync()
   .then(() => {
-    console.log("database foi sincronizado com sucesso");
+    console.log('database foi sincronizado com sucesso');
   })
   .catch((error) => {
-    console.log("deu zica no bagulho", error);
+    console.log('deu zica no bagulho', error);
   });
 
 export default sequelize;

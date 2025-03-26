@@ -1,13 +1,13 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
-import AuthorModel from "./AuthorModels";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
+import AuthorModel from './AuthorModels';
 
 class FilmModel extends Model {
   id_film: number | undefined;
   title: string | undefined;
   description: Text | undefined;
   year: number | undefined;
-  gender: string | undefined;
+  gender: String | undefined;
   authorId: number | undefined;
 }
 
@@ -41,17 +41,17 @@ FilmModel.init(
   },
   {
     sequelize,
-    modelName: "FilmModel",
-    tableName: "films",
+    modelName: 'FilmModel',
+    tableName: 'films',
   }
 );
 
 FilmModel.belongsTo(AuthorModel, {
-  foreignKey: "authorId",
-  as: "author",
+  foreignKey: 'authorId',
+  as: 'author',
 });
 AuthorModel.hasMany(FilmModel, {
-  foreignKey: "authorId",
-  as: "films",
+  foreignKey: 'authorId',
+  as: 'films',
 });
 export default FilmModel;

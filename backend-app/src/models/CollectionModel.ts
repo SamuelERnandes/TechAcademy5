@@ -1,6 +1,6 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
-import FilmModel from "./FilmModel";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
+import FilmModel from './FilmModel';
 
 class CollectionModel extends Model {
   id_collection: number | undefined;
@@ -26,20 +26,19 @@ CollectionModel.init(
   },
   {
     sequelize,
-    modelName: "CollectionModel",
-    tableName: "collections",
+    modelName: 'CollectionModel',
+    tableName: 'collections',
   }
 );
 
 CollectionModel.belongsToMany(FilmModel, {
-  through: "collection_films",
-  foreignKey: "id_collection",
-  as: "films",
+  through: 'collection_films',
+  foreignKey: 'id_collection',
+  as: 'films',
 });
 FilmModel.belongsToMany(CollectionModel, {
-  through: "collection_films",
-  foreignKey: "id_film",
-  as: "collection",
+  through: 'collection_films',
+  foreignKey: 'id_film',
+  as: 'collection',
 });
-
 export default CollectionModel;
