@@ -36,9 +36,10 @@ export const updateUser = async (
   res: Response
 ) => {
   try {
-    const { name } = req.body;
-    if (!name || name === ' ') {
-      return res.status(400).json({ error: 'Name is required' });
+    const { name, email, password, cpf } = req.body;
+
+    if (!name || !email || !password || !cpf) {
+      return res.status(400).json({ error: 'Values required' });
     }
 
     const user = await UserModel.findByPk(req.params.id);
@@ -46,6 +47,9 @@ export const updateUser = async (
       return res.status(400).json({ error: 'User not found' });
     }
     user.name = name;
+    user.email = email;
+    user.password = password;
+    user.cpf = cpf;
 
     await user.save();
     res.status(201).json(user);

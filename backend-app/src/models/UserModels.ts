@@ -7,14 +7,18 @@ class UserModel extends Model {
   name: string | undefined;
   email: string | undefined;
   password: string | undefined;
-  cpf: number | undefined;
+  cpf: String | undefined;
 
   public async hashPassword() {
     this.password = await bcrypt.hash(this.password!, 10);
   }
 
   public async validatePassword(password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password!);
+    if (!this.password) {
+      console.error('Erro: Senha não definida no banco.');
+      return false;
+    }
+    return await bcrypt.compare(password, this.password);
   }
 }
 
@@ -40,7 +44,7 @@ UserModel.init(
       allowNull: false,
     },
     cpf: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: true,
     },
   },
@@ -53,6 +57,11 @@ UserModel.init(
 
 UserModel.beforeCreate(async (user: UserModel) => {
   await user.hashPassword();
+});
+UserModel.beforeUpdate(async (user: UserModel) => {
+  if (user.changed('password')) {
+    await user.hashPassword();
+  }
 });
 
 export default UserModel;
