@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import UserModel from '../models/UserModels';
+import { generateToken } from '../utils/jwt';
 
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -17,6 +18,6 @@ export const loginUser = async (req: Request, res: Response) => {
   if (!isValidPassword) {
     return res.status(400).json({ error: 'Email or password are invalid' });
   }
-
-  res.status(200).json({ message: 'Login successful' });
+  const token = generateToken(user);
+  res.status(200).json({ message: 'Login successful', token });
 };
