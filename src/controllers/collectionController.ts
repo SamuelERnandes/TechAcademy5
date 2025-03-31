@@ -1,15 +1,15 @@
-import { Request, Response } from "express";
-import CollectionModel from "../models/CollectionModel";
-import FilmModel from "../models/FilmModel";
+import { Request, Response } from 'express';
+import CollectionModel from '../model/CollectionModel';
+import FilmModel from '../model/FilmModel';
 
 export const getAll = async (req: Request, res: Response) => {
   const users = await CollectionModel.findAll({
     include: [
       {
         model: FilmModel,
-        as: "films",
+        as: 'films',
         through: { attributes: [] },
-        attributes: ["id_film", "title"],
+        attributes: ['id_film', 'title'],
       },
     ],
   });
@@ -22,16 +22,16 @@ export const getCollectionById = async (req: Request, res: Response) => {
       include: [
         {
           model: FilmModel,
-          as: "films",
+          as: 'films',
         },
       ],
     });
     if (!collection) {
-      return res.status(404).json({ error: "Collection not found" });
+      return res.status(404).json({ error: 'Collection not found' });
     }
     res.json(collection);
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ error: 'Something went wrong!' });
   }
 };
 
@@ -39,7 +39,7 @@ export const createCollection = async (req: Request, res: Response) => {
   try {
     const { name } = req.body;
     if (!name) {
-      return res.status(400).json({ error: "Name is required" });
+      return res.status(400).json({ error: 'Name is required' });
     }
 
     const newCollection = await CollectionModel.create({
@@ -48,7 +48,7 @@ export const createCollection = async (req: Request, res: Response) => {
 
     res.status(201).json(newCollection);
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ error: 'Something went wrong!' });
   }
 };
 
@@ -59,7 +59,7 @@ export const updateCollection = async (req: Request, res: Response) => {
 
     const collection = await CollectionModel.findByPk(id);
     if (!collection) {
-      return res.status(404).json({ error: "Collection not found" });
+      return res.status(404).json({ error: 'Collection not found' });
     }
 
     collection.name = name || collection.name;
@@ -67,7 +67,7 @@ export const updateCollection = async (req: Request, res: Response) => {
 
     res.json(collection);
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ error: 'Something went wrong!' });
   }
 };
 
@@ -76,13 +76,13 @@ export const deleteCollection = async (req: Request, res: Response) => {
     const { id } = req.params;
     const collection = await CollectionModel.findByPk(id);
     if (!collection) {
-      return res.status(404).json({ error: "Collection not found" });
+      return res.status(404).json({ error: 'Collection not found' });
     }
 
     await collection.destroy();
 
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong!" });
+    res.status(500).json({ error: 'Something went wrong!' });
   }
 };

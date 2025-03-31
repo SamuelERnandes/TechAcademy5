@@ -1,12 +1,16 @@
 import jwt from 'jsonwebtoken';
-import UserModel from '../models/UserModels';
+import UserModel from '../model/UserModel';
 
-const JWT_SECRECT = process.env.JWT_SECRET || 'segredo_de_estado';
-const JWT_EXPIRES = '7d';
+const JWT_SECRET = process.env.JWT_SECRET || 'segredo_bem_secreto';
+const JWT_EXPIRES_IN = '7d';
+
 export const generateToken = (user: UserModel): string => {
-  return jwt.sign({ user }, JWT_SECRECT, { expiresIn: JWT_EXPIRES });
+  const { id_user, name, email } = user; // Extraímos os campos importantes
+  return jwt.sign({ id_user, name, email }, JWT_SECRET, {
+    expiresIn: JWT_EXPIRES_IN,
+  });
 };
 
-export const verifyToken = (token: string) => {
-  return jwt.verify(token, JWT_SECRECT);
+export const verifyToken = (token: string): any => {
+  return jwt.verify(token, JWT_SECRET);
 };

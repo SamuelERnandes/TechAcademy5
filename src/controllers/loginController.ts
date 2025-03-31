@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UserModel from '../models/UserModels';
+import UserModel from '../model/UserModel';
 import { generateToken } from '../utils/jwt';
 
 export const loginUser = async (req: Request, res: Response) => {
