@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
