@@ -1,14 +1,9 @@
 import axios from "axios";
 
-interface Movie {
-  id: number;
-  title: string;
-  poster_path: string;
-}
+const token = localStorage.getItem("token");
 
-export const getPopularMovies = async (): Promise<Movie[]> => {
-  const response = await axios.get(
-    "https://api.themoviedb.org/3/movie/popular?api_key=SUA_CHAVE_TMDB"
-  );
-  return response.data.results as Movie[];
-};
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+  timeout: 1000,
+  headers: { Authorization: `Bearer ${token}` },
+});

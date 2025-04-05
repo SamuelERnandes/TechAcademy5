@@ -1,11 +1,13 @@
-import { Button } from "@/components/ui/button";
+import { TestAuth } from "./TestAuth";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <AuthProvider>
+      {" "}
+      {/* Envolve toda a aplicação */}
+      <TestAuth /> {/* Componente que usa useAuth() */}
+    </AuthProvider>
   );
 }
 
