@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
 import UserModel from '../model/UserModel';
+import { passwordValidation } from '../shemas/passwordValidation';
+import { cpfValidation } from '../shemas/cpfValidation';
+import Joi from 'joi';
 
 export const getAll = async (req: Request, res: Response) => {
   try {
@@ -40,11 +42,31 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const emailSchema = Joi.string().email().required();
+    const { error: emailError } = emailSchema.validate(email);
+    if (emailError) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    const existingUser = await UserModel.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: 'E-mail já cadastrado' });
+    }
+
+    const { error: cpfError } = cpfValidation.validate(cpf);
+    if (cpfError) {
+      return res.status(400).json({ error: cpfError.details[0].message });
+    }
+
+    const { error: passwordError } = passwordValidation.validate(password);
+    if (passwordError) {
+      return res.status(400).json({ error: passwordError.details[0].message });
+    }
+
     const user = await UserModel.create({
       name,
       email,
-      password: hashedPassword,
+      password,
       cpf,
     });
 
@@ -59,15 +81,11 @@ export const updateUser = async (
   res: Response
 ) => {
   try {
-    const { name, email, password, cpf } = req.body;
+    const { name, password } = req.body;
     const id = Number(req.params.id);
 
     if (isNaN(id)) {
       return res.status(400).json({ error: 'Invalid ID' });
-    }
-
-    if (!name || !email || !password || !cpf) {
-      return res.status(400).json({ error: 'All fields are required' });
     }
 
     const user = await UserModel.findByPk(id);
@@ -75,10 +93,17 @@ export const updateUser = async (
       return res.status(404).json({ error: 'User not found' });
     }
 
+    if (!name || !password) {
+      return res.status(400).json({ error: 'Name and Password are required' });
+    }
+
+    const { error: passwordError } = passwordValidation.validate(password);
+    if (passwordError) {
+      return res.status(400).json({ error: passwordError.details[0].message });
+    }
+
     user.name = name;
-    user.email = email;
-    user.password = await bcrypt.hash(password, 10);
-    user.cpf = cpf;
+    user.password = password;
 
     await user.save();
     res.status(200).json(user);

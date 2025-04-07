@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import Rating from '../model/ratingModel';
+import Rating from '../model/RatingModel';
 
-// GET - Retorna todos os ratings
 export const getAllRatings = async (req: Request, res: Response) => {
   try {
     const ratings = await Rating.findAll();
@@ -11,7 +10,6 @@ export const getAllRatings = async (req: Request, res: Response) => {
   }
 };
 
-// GET by ID - Retorna um rating específico baseado no ID
 export const getRatingById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -27,13 +25,12 @@ export const getRatingById = async (req: Request, res: Response) => {
   }
 };
 
-// POST - Cria um novo rating
 export const createRating = async (req: Request, res: Response) => {
   try {
-    const { id_film, id_user, rating, comment } = req.body;
+    const { id_movie, id_user, rating, comment } = req.body;
 
     const newRating = await Rating.create({
-      id_film,
+      id_movie,
       id_user,
       rating,
       comment,
@@ -45,7 +42,6 @@ export const createRating = async (req: Request, res: Response) => {
   }
 };
 
-// PUT - Atualiza um rating existente
 export const updateRating = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -66,7 +62,6 @@ export const updateRating = async (req: Request, res: Response) => {
   }
 };
 
-// DELETE - Deleta um rating específico
 export const deleteRating = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

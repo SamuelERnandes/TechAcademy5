@@ -3,7 +3,7 @@ import sequelize from '../config/database';
 
 class Comment extends Model {
   id_comment: number | undefined;
-  id_film: number | undefined;
+  id_movie: number | undefined;
   id_user: number | undefined;
   comment: string | undefined;
 }
@@ -15,7 +15,7 @@ Comment.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    id_film: {
+    id_movie: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

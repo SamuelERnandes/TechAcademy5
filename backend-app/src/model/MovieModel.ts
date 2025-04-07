@@ -1,11 +1,12 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 import AuthorModel from './AuthorModel';
-import Rating from './ratingModel';
-import Comment from './CommentModel';
 
-class FilmModel extends Model {
-  id_film: number | undefined;
+import Comment from './CommentModel';
+import Rating from './RatingModel';
+
+class MovieModel extends Model {
+  id_movie: number | undefined;
   title: string | undefined;
   description: Text | undefined;
   year: number | undefined;
@@ -13,9 +14,9 @@ class FilmModel extends Model {
   authorId: number | undefined;
 }
 
-FilmModel.init(
+MovieModel.init(
   {
-    id_film: {
+    id_movie: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
@@ -43,35 +44,35 @@ FilmModel.init(
   },
   {
     sequelize,
-    modelName: 'FilmModel',
-    tableName: 'films',
+    modelName: 'MovieModel',
+    tableName: 'movies',
   }
 );
 
-FilmModel.belongsTo(AuthorModel, {
+MovieModel.belongsTo(AuthorModel, {
   foreignKey: 'authorId',
   as: 'author',
 });
-AuthorModel.hasMany(FilmModel, {
+AuthorModel.hasMany(MovieModel, {
   foreignKey: 'authorId',
-  as: 'films',
+  as: 'movies',
 });
 
-FilmModel.hasMany(Rating, {
-  foreignKey: 'id_film',
+MovieModel.hasMany(Rating, {
+  foreignKey: 'id_movie',
   as: 'ratings',
 });
 
-Rating.belongsTo(FilmModel, {
-  foreignKey: 'id_film',
+Rating.belongsTo(MovieModel, {
+  foreignKey: 'id_movie',
 });
 
-FilmModel.hasMany(Comment, {
-  foreignKey: 'id_film',
+MovieModel.hasMany(Comment, {
+  foreignKey: 'id_movie',
   as: 'comments',
 });
 
-Comment.belongsTo(FilmModel, {
-  foreignKey: 'id_film',
+Comment.belongsTo(MovieModel, {
+  foreignKey: 'id_movie',
 });
-export default FilmModel;
+export default MovieModel;

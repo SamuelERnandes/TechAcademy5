@@ -3,6 +3,7 @@ import UserModel from '../model/UserModel';
 import { generateToken } from '../utils/jwt';
 
 export const loginUser = async (req: Request, res: Response) => {
+  console.log('body', req.body);
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -13,6 +14,7 @@ export const loginUser = async (req: Request, res: Response) => {
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
   }
+  console.log('iuser', user, password);
 
   const isValidPassword = await user.validatePassword(password);
   if (!isValidPassword) {

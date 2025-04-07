@@ -2,8 +2,8 @@ import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
 class Rating extends Model {
-  id_assessment: number | undefined;
-  id_film: number | undefined;
+  id_rating: number | undefined;
+  id_movie: number | undefined;
   id_user: number | undefined;
   rating: number | undefined;
 }
@@ -15,7 +15,7 @@ Rating.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    id_film: {
+    id_movie: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -35,7 +35,7 @@ Rating.init(
   {
     sequelize,
     modelName: 'Rating',
-    tableName: 'Ratings',
+    tableName: 'ratings',
   }
 );
 

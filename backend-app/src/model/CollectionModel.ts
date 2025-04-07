@@ -1,14 +1,14 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
-import FilmModel from './FilmModel';
+import MovieModel from './MovieModel';
 
 class CollectionModel extends Model {
   id_collection: number | undefined;
   name: string | undefined;
 
-  public readonly films?: FilmModel[];
+  public readonly smovie?: MovieModel[];
 
-  public getFilms!: () => Promise<FilmModel[]>;
+  public getMovie!: () => Promise<MovieModel[]>;
 }
 
 CollectionModel.init(
@@ -31,14 +31,14 @@ CollectionModel.init(
   }
 );
 
-CollectionModel.belongsToMany(FilmModel, {
-  through: 'collection_films',
+CollectionModel.belongsToMany(MovieModel, {
+  through: 'collection_movies',
   foreignKey: 'id_collection',
-  as: 'films',
+  as: 'movies',
 });
-FilmModel.belongsToMany(CollectionModel, {
-  through: 'collection_films',
-  foreignKey: 'id_film',
+MovieModel.belongsToMany(CollectionModel, {
+  through: 'collection_movies',
+  foreignKey: 'id_movie',
   as: 'collection',
 });
 export default CollectionModel;

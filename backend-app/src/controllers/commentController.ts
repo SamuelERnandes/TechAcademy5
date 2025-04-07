@@ -27,10 +27,10 @@ export const getCommentById = async (req: Request, res: Response) => {
 
 export const createComment = async (req: Request, res: Response) => {
   try {
-    const { id_film, id_user, comment } = req.body;
+    const { id_movie, id_user, comment } = req.body;
 
     const newComment = await Comment.create({
-      id_film,
+      id_movie,
       id_user,
       comment,
     });

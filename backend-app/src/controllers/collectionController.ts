@@ -1,15 +1,14 @@
 import { Request, Response } from 'express';
 import CollectionModel from '../model/CollectionModel';
-import FilmModel from '../model/FilmModel';
-
+import MovieModel from '../model/MovieModel';
 export const getAll = async (req: Request, res: Response) => {
   const users = await CollectionModel.findAll({
     include: [
       {
-        model: FilmModel,
-        as: 'films',
+        model: MovieModel,
+        as: 'movies',
         through: { attributes: [] },
-        attributes: ['id_film', 'title'],
+        attributes: ['id_movie', 'title'],
       },
     ],
   });
@@ -21,8 +20,8 @@ export const getCollectionById = async (req: Request, res: Response) => {
     const collection = await CollectionModel.findByPk(req.params.id, {
       include: [
         {
-          model: FilmModel,
-          as: 'films',
+          model: MovieModel,
+          as: 'movies',
         },
       ],
     });
