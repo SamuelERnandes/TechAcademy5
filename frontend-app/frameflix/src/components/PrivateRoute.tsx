@@ -1,12 +1,24 @@
-import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { Navigate, Outlet } from "react-router-dom";
+import Drawer from "./ui/drawer";
+type PrivateRouteProps = {
+  token: string | null;
+  redirectPath?: string;
+};
 
-interface PrivateRouteProps {
-  children: ReactNode;
-}
+export const PrivateRouteWrapper = ({
+  token,
+  redirectPath = "/",
+}: PrivateRouteProps) => {
+  if (!token) {
+    return <Navigate to={redirectPath} replace />;
+  }
 
-export default function PrivateRoute({ children }: PrivateRouteProps) {
-  const { user } = useAuth();
-  return user ? children : <Navigate to="/login" replace />;
-}
+  return (
+    <div className="flex flex-1 bg-slate-100 w-screen h-screen">
+      <Drawer />
+      <div className="flex flex-col flex-1 ml-[230px]">
+        <Outlet />
+      </div>
+    </div>
+  );
+};
