@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Film, Star, FolderPlus, LogOut } from "lucide-react";
+import { Film, Star, FolderPlus, LogOut, Award, List } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 const Drawer = () => {
@@ -32,13 +32,22 @@ const Drawer = () => {
         >
           Coleções
         </NavItem>
+        {/* Nova aba para as Avaliações */}
         <NavItem
-          to="/favorites"
-          icon={<Star size={20} />}
-          active={isActive("/favorites")}
+          to="/rating"
+          icon={<Award size={20} />}
+          active={isActive("/rating")}
         >
-          Favoritos
+          Avaliações
         </NavItem>
+        <NavItem
+          to="/my-ratings"
+          icon={<List size={20} />}
+          active={isActive("/my-ratings")}
+        >
+          Minhas Avaliações
+        </NavItem>
+
         <button
           onClick={handleLogout}
           className="flex items-center gap-3 px-4 py-2 rounded-md text-sm font-medium transition text-slate-300 hover:bg-slate-800"

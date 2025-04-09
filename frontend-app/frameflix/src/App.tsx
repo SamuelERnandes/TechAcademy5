@@ -9,6 +9,8 @@ import Movies from "./pages/Movies";
 import MovieReviews from "./pages/MovieReviews";
 import Collections from "./pages/Collections";
 import Favorites from "./pages/Favorites";
+import Rating from "./pages/Rating";
+import MyRatings from "./pages/MyRatings";
 //import Test from "./pages/Test";
 
 const AppRoutes = () => {
@@ -20,7 +22,9 @@ const AppRoutes = () => {
         <Route path="/collections" element={<Collections />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/moviereviews" element={<MovieReviews />} />
-        <Route path="/favorites" element={<Favorites />} />
+        <Route path="/rating" element={<Rating />} />
+        <Route path="/movies/:id/rating" element={<Rating />} />
+        <Route path="/my-ratings" element={<MyRatings />} />
       </Route>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
