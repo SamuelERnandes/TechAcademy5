@@ -1,17 +1,17 @@
-import express from "express";
+import express from 'express';
 import {
   createCollection,
   deleteCollection,
   getAll,
   getCollectionById,
   updateCollection,
-} from "../controllers/collectionController";
+} from '../controllers/collectionController';
 
 const router = express.Router();
-router.get("/collection", getAll);
-router.get("/collection/:id", getCollectionById);
-router.post("/collection", createCollection);
-router.put("/collection/:id", updateCollection);
-router.delete("/collection/:id", deleteCollection);
+router.get('/users/:id/collections', getAll);
+router.get('/users/:id/collections/:collectionId', getCollectionById);
+router.post('/users/:id/collections', createCollection);
+router.put('/users/:id/collections/:collectionId', updateCollection);
+router.delete('/users/:id/collections/:collectionId', deleteCollection);
 
 export default router;
