@@ -1,15 +1,15 @@
-import { NextFunction, Request, Response } from 'express';
-import { verifyToken } from '../utils/jwt';
+import { NextFunction, Request, Response } from "express";
+import { verifyToken } from "../utils/jwt";
 
 export const authMiddleware = (
-  req: Request,
+  req: Request & { user?: any },
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.header('Authorization')?.replace('Bearer ', '');
+  const token = req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).json({ error: 'Access denied. No token' });
+    return res.status(401).json({ error: "Access denied. No token" });
   }
 
   try {
@@ -19,6 +19,6 @@ export const authMiddleware = (
   } catch (error) {
     return res
       .status(401)
-      .json({ msg: 'Access denied. Invalid token' + error });
+      .json({ msg: "Access denied. Invalid token" + error });
   }
 };
