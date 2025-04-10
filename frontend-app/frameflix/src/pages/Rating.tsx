@@ -5,9 +5,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Rating } from "@/components/ui/rating";
 import { toast } from "sonner";
 import api from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 type Movie = {
-  id: string;
+  id_movie: string;
   title: string;
 };
 
@@ -17,6 +18,8 @@ const RatingPage = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const navigate = useNavigate();
+  const { user } = useAuth();
+  console.log("Usuário logado:", user);
 
   const fetchMovies = async () => {
     try {
@@ -43,7 +46,12 @@ const RatingPage = () => {
     }
 
     try {
-      await api.post(`/movies/${selectedMovieId}/rating`, { rating, comment });
+      await api.post(`ratings`, {
+        rating,
+        comment,
+        id_movie: selectedMovieId,
+        id_user: user?.id,
+      });
       toast.success("Avaliação enviada!");
       navigate("/movies");
     } catch {
@@ -67,7 +75,7 @@ const RatingPage = () => {
         >
           <option value="">-- Escolha um filme --</option>
           {movies.map((movie) => (
-            <option key={movie.id} value={movie.id}>
+            <option key={movie.id_movie} value={movie.id_movie}>
               {movie.title}
             </option>
           ))}

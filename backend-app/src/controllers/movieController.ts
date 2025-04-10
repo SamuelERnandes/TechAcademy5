@@ -1,9 +1,9 @@
-import AuthorModel from '../model/AuthorModel';
-import MovieModel from '../model/MovieModel';
+import AuthorModel from "../model/AuthorModel";
+import MovieModel from "../model/MovieModel";
 
-import { Request, Response } from 'express';
-import Rating from '../model/RatingModel';
-import Comment from '../model/CommentModel';
+import { Request, Response } from "express";
+import Rating from "../model/RatingModel";
+import Comment from "../model/RatingModel";
 
 export const getAll = async (req: Request, res: Response) => {
   const movies = await MovieModel.findAll();
@@ -16,30 +16,30 @@ export const getMovieById = async (req: Request, res: Response) => {
       include: [
         {
           model: AuthorModel,
-          as: 'author',
-          attributes: ['id_author', 'name'],
+          as: "author",
+          attributes: ["id_author", "name"],
         },
         {
           model: Rating,
-          as: 'ratings',
-          attributes: ['rating'],
+          as: "ratings",
+          attributes: ["rating"],
         },
         {
           model: Comment,
-          as: 'comments',
-          attributes: ['comment'],
+          as: "comments",
+          attributes: ["comment"],
         },
       ],
     });
 
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return res.status(404).json({ error: "Movie not found" });
     }
 
     res.json(movie);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ error: "Something went wrong!" });
   }
 };
 
@@ -49,7 +49,7 @@ export const createMovie = async (req: Request, res: Response) => {
 
     if (!title || !description || !year || !gender) {
       return res.status(400).json({
-        error: 'All fields (title, description, year, gender) are required',
+        error: "All fields (title, description, year, gender) are required",
       });
     }
 
@@ -63,7 +63,7 @@ export const createMovie = async (req: Request, res: Response) => {
 
     res.status(201).json(newMovie);
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ error: "Something went wrong!" });
   }
 };
 
@@ -73,7 +73,7 @@ export const updateMovie = async (req: Request, res: Response) => {
     const movie = await MovieModel.findByPk(req.params.id);
 
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return res.status(404).json({ error: "Movie not found" });
     }
 
     movie.title = title || movie.title;
@@ -85,7 +85,7 @@ export const updateMovie = async (req: Request, res: Response) => {
     await movie.save();
     res.json(movie);
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ error: "Something went wrong!" });
   }
 };
 
@@ -94,12 +94,12 @@ export const deleteMovie = async (req: Request, res: Response) => {
     const movie = await MovieModel.findByPk(req.params.id);
 
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return res.status(404).json({ error: "Movie not found" });
     }
 
     await movie.destroy();
     res.status(204).send();
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ error: "Something went wrong!" });
   }
 };

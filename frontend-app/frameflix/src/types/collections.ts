@@ -1,8 +1,8 @@
 import { Movie } from "./movie";
 
 export type Collection = {
-  id: string;
+  idCollection: string;
   name: string;
-  userId: string;
+  idUser: string;
   movies: Movie[];
 };

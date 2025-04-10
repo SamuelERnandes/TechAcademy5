@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Rating } from "@/components/ui/rating";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 
 type RatingData = {
   id_rating: string;
-  id_film: string;
+  id_movie: number;
+  id_user: number;
   film_title: string; // supondo que você está populando o título
   comment: string;
   rating: number;
@@ -18,6 +20,8 @@ const MyRatings = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editedRating, setEditedRating] = useState<number>(0);
   const [editedComment, setEditedComment] = useState("");
+  const { user } = useAuth();
+  console.log("Usuário logado:", user);
 
   const fetchRatings = async () => {
     try {

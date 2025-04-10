@@ -7,6 +7,7 @@ import api from "@/services/api";
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [showModal, setShowModal] = useState(false);
 
   const fetchMovies = async () => {
     try {
@@ -29,40 +30,62 @@ const Movies = () => {
     <div className="p-8 bg-slate-800 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Filmes disponíveis</h1>
 
-      {/* Exibe o Player de Vídeo apenas se um filme for selecionado */}
-      {selectedMovie && (
-        <div className="mb-6">
-          <video width="800" height="450" controls>
-            <source
-              src={`http://localhost:3000/movies/${selectedMovie.id}`}
-              type="video/mp4"
+      {/* Grid de Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {movies.map((movie) => (
+          <div
+            key={movie.id_movie}
+            className="bg-slate-900 rounded-xl shadow-lg overflow-hidden transition transform hover:scale-105 hover:shadow-xl"
+          >
+            <img
+              src={`http://localhost:3000/public/posters/${movie.poster}`}
+              alt={movie.title}
+              className="w-full h-64 object-cover"
             />
-            Seu navegador não suporta vídeos HTML5.
-          </video>
-        </div>
-      )}
-
-      {movies.length === 0 ? (
-        <p className="text-gray-500">Nenhum filme encontrado.</p>
-      ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-          {movies.map((movie) => (
-            <div
-              key={movie.id}
-              onClick={() => handleMovieClick(movie)} // Ao clicar, exibe o vídeo
-              className="bg-slate-800 rounded-lg shadow-md hover:shadow-lg cursor-pointer transition p-4"
-            >
-              <img
-                src={movie.posterUrl}
-                alt={movie.title}
-                className="w-full h-64 object-cover rounded-lg"
-              />
-              <div className="mt-2">
-                <h2 className="font-semibold text-base">{movie.title}</h2>
-                <p className="text-sm text-gray-300">Nota: {movie.rating}/5</p>
+            <div className="p-4 flex flex-col justify-between h-36">
+              <div>
+                <h3 className="font-bold text-lg mb-1 truncate">
+                  {movie.title}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  Nota: {movie.rating ?? "-"} / 5
+                </p>
               </div>
+              <button
+                onClick={() => {
+                  setSelectedMovie(movie);
+                  setShowModal(true);
+                }}
+                className="mt-3 bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded transition w-full"
+              >
+                Assistir
+              </button>
             </div>
-          ))}
+          </div>
+        ))}
+      </div>
+
+      {/* Exibe o Player de Vídeo apenas se um filme for selecionado */}
+      {showModal && selectedMovie && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-slate-900 rounded-lg p-6 w-[90%] max-w-3xl relative shadow-lg">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-white text-xl hover:text-red-500"
+            >
+              &times;
+            </button>
+            <h2 className="text-2xl font-bold mb-4 text-center">
+              {selectedMovie.title}
+            </h2>
+            <video controls className="w-full rounded">
+              <source
+                src={`http://localhost:3000/public/videos/${selectedMovie.videoFile}`}
+                type="video/mp4"
+              />
+              Seu navegador não suporta vídeos HTML5.
+            </video>
+          </div>
         </div>
       )}
     </div>

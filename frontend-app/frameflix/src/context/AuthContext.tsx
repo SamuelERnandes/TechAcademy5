@@ -2,7 +2,7 @@ import { jwtDecode } from "jwt-decode";
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type User = {
-  id?: string;
+  id: number | string;
   name?: string;
   cpf?: string;
 };
@@ -19,7 +19,14 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(() => {
     const token = localStorage.getItem("token");
-    return token ? jwtDecode<User>(token) : null;
+    if (!token) return null;
+
+    const decoded: any = jwtDecode(token);
+    return {
+      id: decoded.id_user || decoded.id, // compatibilidade com back
+      name: decoded.name,
+      cpf: decoded.cpf,
+    };
   });
 
   const [authenticated, setAuthenticated] = useState(() => {
@@ -27,9 +34,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const login = (token: string) => {
-    const decodedUser = jwtDecode<User>(token);
+    const decoded: any = jwtDecode(token);
+    const normalizedUser: User = {
+      id: decoded.id_user || decoded.id,
+      name: decoded.name,
+      cpf: decoded.cpf,
+    };
+
     localStorage.setItem("token", token);
-    setUser(decodedUser);
+    setUser(normalizedUser);
     setAuthenticated(true);
   };
 

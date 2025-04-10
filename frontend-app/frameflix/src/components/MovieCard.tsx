@@ -1,7 +1,8 @@
 interface Movie {
   id: number;
   title: string;
-  poster_path: string;
+  poster: string;
+  rating?: number;
 }
 
 interface MovieCardProps {
@@ -10,14 +11,15 @@ interface MovieCardProps {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+    <div className="bg-slate-900 rounded-lg shadow-md overflow-hidden">
       <img
-        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+        src={`http://localhost:3000/public/posters/${movie.poster}`}
         alt={movie.title}
         className="w-full h-64 object-cover"
       />
       <div className="p-4">
         <h3 className="font-bold text-lg">{movie.title}</h3>
+        <p className="text-sm text-gray-400">Nota: {movie.rating ?? "-"}/5</p>
       </div>
     </div>
   );

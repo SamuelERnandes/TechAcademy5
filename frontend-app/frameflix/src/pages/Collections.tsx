@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import api from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
@@ -12,12 +13,14 @@ const Collections = () => {
 
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
+  const { user } = useAuth();
+  console.log("Usuário logado:", user);
 
   const fetchCollections = async () => {
     try {
-      const { data } = await api.get("/collection");
+      const { data } = await api.get(`/users/${user?.id}/collections`);
       const formatted = data.map((col: any) => ({
-        id: col.id_collection,
+        idCollection: col.id_collection,
         name: col.name,
         userId: col.id_user,
         movies: col.movies ?? [],
@@ -32,12 +35,14 @@ const Collections = () => {
     if (!newName.trim()) return;
     try {
       setLoading(true);
-      const { data } = await api.post("/collection", { name: newName });
+      const { data } = await api.post(`/users/${user?.id}/collections`, {
+        name: newName,
+      });
 
       const formatted = {
-        id: data.id_collection,
+        idCollection: data.id_collection,
         name: data.name,
-        userId: data.id_user,
+        idUser: data.id_user,
         movies: [],
       };
 
@@ -53,8 +58,8 @@ const Collections = () => {
 
   const deleteCollection = async (id: string) => {
     try {
-      await api.delete(`/collection/${id}`);
-      setCollections((prev) => prev.filter((c) => c.id !== id));
+      await api.delete(`/users/${user?.id}/collections/${id}`);
+      setCollections((prev) => prev.filter((c) => c.idCollection !== id));
       toast.success("Coleção removida!");
     } catch {
       toast.error("Erro ao remover coleção.");
@@ -64,9 +69,9 @@ const Collections = () => {
   const updateCollection = async (id: string) => {
     if (!editName.trim()) return;
     try {
-      await api.put(`/collection/${id}`, { name: editName });
+      await api.put(`/users/${user?.id}/collections/${id}`, { name: editName });
       setCollections((prev) =>
-        prev.map((c) => (c.id === id ? { ...c, name: editName } : c))
+        prev.map((c) => (c.idCollection === id ? { ...c, name: editName } : c))
       );
       toast.success("Coleção atualizada!");
       setEditingId(null);
@@ -99,10 +104,10 @@ const Collections = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {collections.map((collection) => (
           <div
-            key={collection.id}
+            key={collection.idCollection}
             className="bg-white rounded-lg shadow p-4 border"
           >
-            {editingId === collection.id ? (
+            {editingId === collection.idCollection ? (
               <>
                 <Input
                   value={editName}
@@ -113,7 +118,7 @@ const Collections = () => {
                 />
                 <div className="flex gap-2">
                   <Button
-                    onClick={() => updateCollection(collection.id)}
+                    onClick={() => updateCollection(collection.idCollection)}
                     className="bg-teal-600"
                   >
                     Salvar
@@ -139,14 +144,14 @@ const Collections = () => {
                     variant="default"
                     onClick={() => {
                       setEditName(collection.name);
-                      setEditingId(collection.id);
+                      setEditingId(collection.idCollection);
                     }}
                   >
                     Editar
                   </Button>
                   <Button
                     variant="destructive"
-                    onClick={() => deleteCollection(collection.id)}
+                    onClick={() => deleteCollection(collection.idCollection)}
                   >
                     Excluir
                   </Button>

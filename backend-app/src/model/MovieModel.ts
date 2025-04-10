@@ -1,9 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database';
-import AuthorModel from './AuthorModel';
-
-import Comment from './CommentModel';
-import Rating from './RatingModel';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/database";
 
 class MovieModel extends Model {
   id_movie: number | undefined;
@@ -41,38 +37,20 @@ MovieModel.init(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
+    videoFile: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    poster: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,
-    modelName: 'MovieModel',
-    tableName: 'movies',
+    modelName: "MovieModel",
+    tableName: "movies",
   }
 );
 
-MovieModel.belongsTo(AuthorModel, {
-  foreignKey: 'authorId',
-  as: 'author',
-});
-AuthorModel.hasMany(MovieModel, {
-  foreignKey: 'authorId',
-  as: 'movies',
-});
-
-MovieModel.hasMany(Rating, {
-  foreignKey: 'id_movie',
-  as: 'ratings',
-});
-
-Rating.belongsTo(MovieModel, {
-  foreignKey: 'id_movie',
-});
-
-MovieModel.hasMany(Comment, {
-  foreignKey: 'id_movie',
-  as: 'comments',
-});
-
-Comment.belongsTo(MovieModel, {
-  foreignKey: 'id_movie',
-});
 export default MovieModel;

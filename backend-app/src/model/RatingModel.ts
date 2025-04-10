@@ -1,11 +1,12 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/database";
 
 class Rating extends Model {
   id_rating: number | undefined;
   id_movie: number | undefined;
   id_user: number | undefined;
   rating: number | undefined;
+  comment: string | undefined;
 }
 
 Rating.init(
@@ -31,11 +32,15 @@ Rating.init(
         max: 5,
       },
     },
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     sequelize,
-    modelName: 'Rating',
-    tableName: 'ratings',
+    modelName: "Rating",
+    tableName: "ratings",
   }
 );
 
