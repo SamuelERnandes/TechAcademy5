@@ -1,5 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
-import { Film, Star, FolderPlus, LogOut, Award, List } from "lucide-react";
+import {
+  Film,
+  Star,
+  FolderPlus,
+  LogOut,
+  Award,
+  List,
+  User,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 const Drawer = () => {
@@ -46,6 +54,13 @@ const Drawer = () => {
           active={isActive("/my-ratings")}
         >
           Minhas Avaliações
+        </NavItem>
+        <NavItem
+          to="/profile"
+          icon={<User size={20} />}
+          active={isActive("/profile")}
+        >
+          Perfil
         </NavItem>
 
         <button

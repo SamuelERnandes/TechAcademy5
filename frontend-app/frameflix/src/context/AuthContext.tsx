@@ -5,6 +5,7 @@ type User = {
   id: number | string;
   name?: string;
   cpf?: string;
+  email?: string;
 };
 
 type AuthContextData = {
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       id: decoded.id_user || decoded.id, // compatibilidade com back
       name: decoded.name,
       cpf: decoded.cpf,
+      email: decoded.email, // ✅ adicione isso aqui
     };
   });
 
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       id: decoded.id_user || decoded.id,
       name: decoded.name,
       cpf: decoded.cpf,
+      email: decoded.email,
     };
 
     localStorage.setItem("token", token);

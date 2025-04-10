@@ -11,6 +11,7 @@ import Collections from "./pages/Collections";
 import Favorites from "./pages/Favorites";
 import Rating from "./pages/Rating";
 import MyRatings from "./pages/MyRatings";
+import UserProfile from "./pages/UserProfile";
 //import Test from "./pages/Test";
 
 const AppRoutes = () => {
@@ -25,6 +26,7 @@ const AppRoutes = () => {
         <Route path="/rating" element={<Rating />} />
         <Route path="/movies/:id/rating" element={<Rating />} />
         <Route path="/my-ratings" element={<MyRatings />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Route>
       <Route path="/" element={<Login />} />
       <Route path="/login" element={<Login />} />
