@@ -1,5 +1,3 @@
-// src/components/ui/logo.tsx
-
 import { Link } from "react-router-dom";
 
 const Logo = () => {

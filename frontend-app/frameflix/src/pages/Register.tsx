@@ -18,6 +18,8 @@ import Logo from "@/components/ui/logo";
 
 import api from "@/services/api";
 
+import { isValidCPF } from "@/utils/cpfValidator";
+
 const Register = () => {
   const form = useForm<RegisterForm>();
 
@@ -101,7 +103,11 @@ const Register = () => {
               name="cpf"
               label="CPF"
               type="text"
-              rules={{ required: "CPF obrigatório" }}
+              rules={{
+                required: "CPF obrigatório",
+                validate: (value: string) =>
+                  isValidCPF(value) || "CPF inválido",
+              }}
             />
 
             <Button type="submit" className="bg-teal-500">

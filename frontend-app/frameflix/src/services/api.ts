@@ -5,7 +5,6 @@ const api = axios.create({
   timeout: 1000,
 });
 
-// Interceptor que adiciona o token antes de cada requisição
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) {

@@ -10,7 +10,7 @@ type RatingData = {
   id_rating: string;
   id_movie: number;
   id_user: number;
-  film_title: string; // supondo que você está populando o título
+  film_title: string;
   comment: string;
   rating: number;
 };
@@ -25,7 +25,7 @@ const MyRatings = () => {
 
   const fetchRatings = async () => {
     try {
-      const { data } = await api.get("/ratings/mine"); // endpoint de avaliações do usuário
+      const { data } = await api.get("/ratings/mine");
       setRatings(data);
     } catch {
       toast.error("Erro ao carregar suas avaliações.");

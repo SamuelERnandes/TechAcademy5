@@ -11,7 +11,7 @@ const Movies = () => {
 
   const fetchMovies = async () => {
     try {
-      const { data } = await api.get("/movies"); // Busca filmes do backend
+      const { data } = await api.get("/movies");
       setMovies(data);
     } catch {
       toast.error("Erro ao buscar filmes.");
@@ -30,7 +30,6 @@ const Movies = () => {
     <div className="p-8 bg-slate-800 text-white min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Filmes disponíveis</h1>
 
-      {/* Grid de Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <div
@@ -65,7 +64,6 @@ const Movies = () => {
         ))}
       </div>
 
-      {/* Exibe o Player de Vídeo apenas se um filme for selecionado */}
       {showModal && selectedMovie && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
           <div className="bg-slate-900 rounded-lg p-6 w-[90%] max-w-3xl relative shadow-lg">

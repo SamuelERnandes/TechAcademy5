@@ -1,13 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import {
-  Film,
-  Star,
-  FolderPlus,
-  LogOut,
-  Award,
-  List,
-  User,
-} from "lucide-react";
+import { Film, FolderPlus, LogOut, Award, List, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 const Drawer = () => {
@@ -40,7 +32,6 @@ const Drawer = () => {
         >
           Coleções
         </NavItem>
-        {/* Nova aba para as Avaliações */}
         <NavItem
           to="/rating"
           icon={<Award size={20} />}

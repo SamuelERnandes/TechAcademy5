@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const decoded: any = jwtDecode(token);
     return {
-      id: decoded.id_user || decoded.id, // compatibilidade com back
+      id: decoded.id_user || decoded.id,
       name: decoded.name,
       cpf: decoded.cpf,
-      email: decoded.email, // ✅ adicione isso aqui
+      email: decoded.email,
     };
   });
 
