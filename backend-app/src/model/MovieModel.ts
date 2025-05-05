@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
 
 class MovieModel extends Model {
   id_movie: number | undefined;
@@ -8,6 +8,8 @@ class MovieModel extends Model {
   year: number | undefined;
   gender: String | undefined;
   authorId: number | undefined;
+  videoFile: string | undefined;
+  poster: string | undefined;
 }
 
 MovieModel.init(
@@ -48,8 +50,8 @@ MovieModel.init(
   },
   {
     sequelize,
-    modelName: "MovieModel",
-    tableName: "movies",
+    modelName: 'MovieModel',
+    tableName: 'movies',
   }
 );
 

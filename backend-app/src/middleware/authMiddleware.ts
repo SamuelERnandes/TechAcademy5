@@ -1,24 +1,30 @@
-import { NextFunction, Request, Response } from "express";
-import { verifyToken } from "../utils/jwt";
+import { NextFunction, Request, Response } from 'express';
+import { verifyToken } from '../utils/jwt';
 
 export const authMiddleware = (
   req: Request & { user?: any },
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.header("Authorization")?.replace("Bearer ", "");
+  const authHeader = req.header('Authorization');
+  const token = authHeader?.replace('Bearer ', '');
 
   if (!token) {
-    return res.status(401).json({ error: "Access denied. No token" });
+    console.warn('Token não encontrado no header Authorization');
+    return res.status(401).json({ error: 'Access denied. No token' });
   }
 
   try {
     const decoded: any = verifyToken(token);
-    req.user = decoded;
+
+    req.user = {
+      id: decoded.id_user,
+      ...decoded,
+    };
+
     next();
   } catch (error) {
-    return res
-      .status(401)
-      .json({ msg: "Access denied. Invalid token" + error });
+    console.error('Erro ao verificar token:', error);
+    return res.status(401).json({ error: 'Access denied. Invalid token' });
   }
 };
