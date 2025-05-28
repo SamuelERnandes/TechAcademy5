@@ -51,6 +51,29 @@ export const createCollection = async (req: Request, res: Response) => {
   res.status(201).json(newCollection);
 };
 
+export const addMovieToCollection = async (req: Request, res: Response) => {
+  const { collectionId } = req.params;
+  const { movieId } = req.body;
+
+  try {
+    const collection = await CollectionModel.findByPk(collectionId);
+    if (!collection) {
+      return res.status(404).json({ error: 'Collection not found' });
+    }
+
+    const movie = await MovieModel.findByPk(movieId);
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    await collection.addMovie(movie);
+
+    res.status(200).json({ message: 'Filme adicionado à coleção' });
+  } catch (error) {
+    res.status(500).json({ error: 'Erro ao adicionar filme à coleção' });
+  }
+};
+
 export const updateCollection = async (req: Request, res: Response) => {
   const { id: id_user, collectionId: id_collection } = req.params;
   const { name } = req.body;

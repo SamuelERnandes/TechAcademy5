@@ -11,6 +11,7 @@ class CollectionModel extends Model {
   public readonly smovie?: MovieModel[];
 
   public getMovie!: () => Promise<MovieModel[]>;
+  public addMovie!: (movie: MovieModel) => Promise<void>;
 }
 
 CollectionModel.init(
