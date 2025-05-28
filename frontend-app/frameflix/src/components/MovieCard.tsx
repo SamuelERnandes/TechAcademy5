@@ -19,7 +19,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
       />
       <div className="p-4">
         <h3 className="font-bold text-lg">{movie.title}</h3>
-        <p className="text-sm text-gray-400">Nota: {movie.rating ?? "-"}/5</p>
+        <p className="text-sm text-gray-400">Nota: {movie.rating ?? '-'}/5</p>
       </div>
     </div>
   );

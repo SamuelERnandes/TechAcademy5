@@ -1,20 +1,28 @@
-import { useEffect, useState } from "react";
-import { Collection } from "@/types/collections";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import api from "@/services/api";
-import { useAuth } from "@/context/AuthContext";
+import { useEffect, useState } from 'react';
+import { Collection } from '@/types/collections';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { toast } from 'sonner';
+import api from '@/services/api';
+import { useAuth } from '@/context/AuthContext';
 
 const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
+  const [editName, setEditName] = useState('');
+
+  const [showMoviesModal, setShowMoviesModal] = useState(false);
+  const [availableMovies, setAvailableMovies] = useState<
+    { id: string; title: string }[]
+  >([]);
+  const [selectedCollection, setSelectedCollection] = useState<string | null>(
+    null
+  );
+
   const { user } = useAuth();
-  console.log("Usuário logado:", user);
 
   const fetchCollections = async () => {
     try {
@@ -27,7 +35,7 @@ const Collections = () => {
       }));
       setCollections(formatted);
     } catch {
-      toast.error("Erro ao buscar coleções.");
+      toast.error('Erro ao buscar coleções.');
     }
   };
 
@@ -47,10 +55,10 @@ const Collections = () => {
       };
 
       setCollections((prev) => [...prev, formatted]);
-      setNewName("");
-      toast.success("Coleção criada!");
+      setNewName('');
+      toast.success('Coleção criada!');
     } catch {
-      toast.error("Erro ao criar coleção.");
+      toast.error('Erro ao criar coleção.');
     } finally {
       setLoading(false);
     }
@@ -60,9 +68,9 @@ const Collections = () => {
     try {
       await api.delete(`/users/${user?.id}/collections/${id}`);
       setCollections((prev) => prev.filter((c) => c.idCollection !== id));
-      toast.success("Coleção removida!");
+      toast.success('Coleção removida!');
     } catch {
-      toast.error("Erro ao remover coleção.");
+      toast.error('Erro ao remover coleção.');
     }
   };
 
@@ -73,10 +81,33 @@ const Collections = () => {
       setCollections((prev) =>
         prev.map((c) => (c.idCollection === id ? { ...c, name: editName } : c))
       );
-      toast.success("Coleção atualizada!");
+      toast.success('Coleção atualizada!');
       setEditingId(null);
     } catch {
-      toast.error("Erro ao atualizar coleção.");
+      toast.error('Erro ao atualizar coleção.');
+    }
+  };
+
+  const fetchAvailableMovies = async () => {
+    try {
+      const { data } = await api.get('/movies');
+      setAvailableMovies(data);
+    } catch {
+      toast.error('Erro ao buscar filmes disponíveis.');
+    }
+  };
+
+  const addMovieToCollection = async (
+    collectionId: string,
+    movieId: string
+  ) => {
+    try {
+      await api.post(`/collections/${collectionId}/movies`, { movieId });
+      toast.success('Filme adicionado!');
+      fetchCollections();
+      setShowMoviesModal(false);
+    } catch {
+      toast.error('Erro ao adicionar filme.');
     }
   };
 
@@ -105,7 +136,7 @@ const Collections = () => {
         {collections.map((collection) => (
           <div
             key={collection.idCollection}
-            className="bg-white rounded-lg shadow p-4 border"
+            className="bg-white rounded-lg shadow p-4 border text-black"
           >
             {editingId === collection.idCollection ? (
               <>
@@ -114,9 +145,9 @@ const Collections = () => {
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setEditName(e.target.value)
                   }
-                  className="text-black border border-slate-600"
+                  className="border border-slate-600"
                 />
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-2">
                   <Button
                     onClick={() => updateCollection(collection.idCollection)}
                     className="bg-teal-600"
@@ -133,13 +164,11 @@ const Collections = () => {
               </>
             ) : (
               <>
-                <h2 className="text-lg text-gray-800 font-semibold">
-                  {collection.name}
-                </h2>
-                <p className="text-sm text-gray-500">
+                <h2 className="text-lg font-semibold">{collection.name}</h2>
+                <p className="text-sm text-gray-600">
                   {collection.movies?.length ?? 0} filme(s)
                 </p>
-                <div className="flex gap-2 mt-4">
+                <div className="flex gap-2 mt-4 flex-wrap">
                   <Button
                     variant="default"
                     onClick={() => {
@@ -155,12 +184,58 @@ const Collections = () => {
                   >
                     Excluir
                   </Button>
+                  <Button
+                    className="bg-slate-700 text-white hover:bg-slate-600"
+                    onClick={() => {
+                      setSelectedCollection(collection.idCollection);
+                      fetchAvailableMovies();
+                      setShowMoviesModal(true);
+                    }}
+                  >
+                    Filmes
+                  </Button>
                 </div>
               </>
             )}
           </div>
         ))}
       </div>
+
+      {/* Modal de seleção de filmes */}
+      {showMoviesModal && selectedCollection && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded shadow-lg w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4 text-black">
+              Selecionar Filme
+            </h2>
+            <ul className="space-y-2 max-h-60 overflow-y-auto">
+              {availableMovies.map((movie) => (
+                <li
+                  key={movie.id}
+                  className="flex justify-between items-center border-b pb-2"
+                >
+                  <span className="text-black">{movie.title}</span>
+                  <Button
+                    onClick={() =>
+                      addMovieToCollection(selectedCollection, movie.id)
+                    }
+                  >
+                    Adicionar
+                  </Button>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex justify-end">
+              <Button
+                onClick={() => setShowMoviesModal(false)}
+                className="text-white"
+              >
+                Fechar
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
