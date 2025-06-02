@@ -23,6 +23,12 @@ export const getUserById = async (
       return res.status(400).json({ error: "Invalid ID" });
     }
 
+    if (req.user?.id !== id) {
+      return res
+        .status(403)
+        .json({ error: "You can only change your personal information" });
+    }
+
     const user = await UserModel.findByPk(id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
@@ -82,10 +88,16 @@ export const updateUser = async (
 ) => {
   try {
     const id = Number(req.params.id);
-    const { name, email, password } = req.body;
+    const { name, email, password, cpf } = req.body;
 
     if (isNaN(id)) {
       return res.status(400).json({ error: "Invalid ID" });
+    }
+
+    if (req.user?.id !== id) {
+      return res.status(403).json({
+        error: "You can only change your personal information",
+      });
     }
 
     const user = await UserModel.findByPk(id);
@@ -94,14 +106,20 @@ export const updateUser = async (
     }
 
     // Verifica se tem algo para atualizar
-    if (!name && !email && !password) {
+    if (!name && !email && !password && !cpf) {
       return res
         .status(400)
         .json({ error: "Nenhum dado enviado para atualização." });
     }
 
     if (name) user.name = name;
-    if (email) user.email = email;
+    //if (email) user.email = email;
+
+    if (email) {
+      return res.status(400).json({
+        error: "Alteração de e-mail não é permitida.",
+      });
+    }
 
     if (password) {
       const { error: passwordError } = passwordValidation.validate(password);
@@ -111,6 +129,14 @@ export const updateUser = async (
           .json({ error: passwordError.details[0].message });
       }
       user.password = password;
+    }
+
+    if (cpf) {
+      const { error: cpfError } = cpfValidation.validate(cpf);
+      if (cpfError) {
+        return res.status(400).json({ error: cpfError.details[0].message });
+      }
+      user.cpf = cpf;
     }
 
     await user.save();
