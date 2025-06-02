@@ -66,10 +66,12 @@ export const addMovieToCollection = async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Movie not found' });
     }
 
-    await collection.addMovie(movie);
+    // Use ID diretamente para evitar problemas de referência
 
+    await collection.addMovie(movie);
     res.status(200).json({ message: 'Filme adicionado à coleção' });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erro ao adicionar filme à coleção' });
   }
 };

@@ -1,21 +1,21 @@
-import express from 'express';
+import express from "express";
 import {
   getAll,
   getUserById,
   createUser,
   updateUser,
   deleteUserById,
-} from '../controllers/userController';
+} from "../controllers/userController";
 
-import { authMiddleware } from '../middleware/authMiddleware';
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post('/users', createUser);
+router.post("/users", createUser);
 
-router.get('/users', authMiddleware, getAll);
-router.get('/users/:id', authMiddleware, getUserById);
-router.put('/users/:id', updateUser);
-router.delete('/users/:id', deleteUserById);
+router.get("/users", authMiddleware, getAll);
+router.get("/users/:id", authMiddleware, getUserById);
+router.put("/users/:id", authMiddleware, updateUser);
+router.delete("/users/:id", authMiddleware, deleteUserById);
 
 export default router;

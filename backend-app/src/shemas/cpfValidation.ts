@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const isValidCPF = (cpf: string): boolean => {
+export const isValidCPF = (cpf: string): boolean => {
   cpf = cpf.replace(/[^\d]+/g, "");
   if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
 

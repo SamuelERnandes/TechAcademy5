@@ -1,6 +1,7 @@
 import Joi from 'joi';
 
 export const passwordValidation = Joi.string()
+  .empty('')
   .min(8)
   .max(20)
   .pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,20}$/)

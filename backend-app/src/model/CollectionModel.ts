@@ -10,8 +10,9 @@ class CollectionModel extends Model {
 
   public readonly smovie?: MovieModel[];
 
-  public getMovie!: () => Promise<MovieModel[]>;
-  public addMovie!: (movie: MovieModel) => Promise<void>;
+  public getMovies!: () => Promise<MovieModel[]>;
+  public addMovie!: (movie: MovieModel | number) => Promise<void>;
+  public addMovies!: (movies: MovieModel[] | number[]) => Promise<void>;
 }
 
 CollectionModel.init(
@@ -41,16 +42,18 @@ CollectionModel.init(
 CollectionModel.belongsToMany(MovieModel, {
   through: 'collection_movies',
   foreignKey: 'id_collection',
+  otherKey: 'id_movie',
   as: 'movies',
 });
 MovieModel.belongsToMany(CollectionModel, {
   through: 'collection_movies',
   foreignKey: 'id_movie',
-  as: 'collection',
+  otherKey: 'id_collection',
+  as: 'collections',
 });
 CollectionModel.belongsTo(UserModel, {
   foreignKey: 'id_user',
-  as: 'users',
+  as: 'user',
 });
 UserModel.hasMany(CollectionModel, {
   foreignKey: 'id_user',

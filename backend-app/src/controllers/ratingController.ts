@@ -3,7 +3,7 @@ import Rating from '../model/RatingModel';
 import MovieModel from '../model/MovieModel';
 
 export const getUserRatings = async (
-  req: Request & { user?: { id_user: number } },
+  req: Request, // & { user?: { id_user: number } },
   res: Response
 ) => {
   try {
