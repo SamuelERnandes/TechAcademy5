@@ -94,7 +94,7 @@ export const updateUser = async (
       return res.status(400).json({ error: "Invalid ID" });
     }
 
-    if (req.user?.id !== id) {
+    if (req.user?.id_user !== id) {
       return res.status(403).json({
         error: "You can only change your personal information",
       });

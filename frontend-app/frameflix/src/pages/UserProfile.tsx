@@ -1,30 +1,30 @@
-import { useState } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import api from '@/services/api';
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import api from "@/services/api";
 
 const UserProfile = () => {
   const { user } = useAuth();
 
-  const [name, setName] = useState<string>(user?.name || '');
-  const [email, setEmail] = useState<string>(user?.email || '');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
-  const [error, setError] = useState<string>('');
+  const [name, setName] = useState<string>(user?.name || "");
+  const [email, setEmail] = useState<string>(user?.email || "");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleSave = async () => {
-    setError('');
+    setError("");
 
     if (!name.trim() || !email.trim()) {
-      setError('Nome e e-mail são obrigatórios.');
+      setError("Nome e e-mail são obrigatórios.");
       return;
     }
 
     if (password.trim() && password !== confirmPassword) {
-      setError('As senhas não coincidem.');
+      setError("As senhas não coincidem.");
       return;
     }
 
@@ -33,7 +33,6 @@ const UserProfile = () => {
 
       const payload: any = {
         name,
-        email,
       };
 
       if (password.trim()) {
@@ -42,11 +41,11 @@ const UserProfile = () => {
 
       await api.put(`/users/${user?.id}`, payload);
 
-      toast.success('Perfil atualizado com sucesso!');
-      setPassword('');
-      setConfirmPassword('');
+      toast.success("Perfil atualizado com sucesso!");
+      setPassword("");
+      setConfirmPassword("");
     } catch {
-      toast.error('Erro ao atualizar perfil.');
+      toast.error("Erro ao atualizar perfil.");
     } finally {
       setLoading(false);
     }
@@ -67,7 +66,7 @@ const UserProfile = () => {
           }
           className="mb-1"
         />
-        {name.trim() === '' && (
+        {name.trim() === "" && (
           <p className="text-red-400 text-sm mb-2">O nome é obrigatório.</p>
         )}
 
@@ -79,7 +78,7 @@ const UserProfile = () => {
           }
           className="mb-1"
         />
-        {email.trim() === '' && (
+        {email.trim() === "" && (
           <p className="text-red-400 text-sm mb-2">O email é obrigatório.</p>
         )}
 
@@ -118,7 +117,7 @@ const UserProfile = () => {
         )}
 
         <Button onClick={handleSave} className="w-full" disabled={loading}>
-          {loading ? 'Salvando...' : 'Salvar'}
+          {loading ? "Salvando..." : "Salvar"}
         </Button>
       </div>
     </div>
