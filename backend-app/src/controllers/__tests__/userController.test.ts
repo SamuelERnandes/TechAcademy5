@@ -23,9 +23,9 @@ describe("updateUser - autorização", () => {
 
   it("retorna 400 se nenhum campo for enviado na edição", async () => {
     const req = {
-      params: { id: "2" },
+      params: { id: 2 },
       body: {},
-      user: { id: 2 },
+      user: { id_user: 2 },
     } as any;
 
     const res = mockResponse();
@@ -46,9 +46,9 @@ describe("updateUser - autorização", () => {
 
   it("retorna 400 se tentar alterar o e-mail", async () => {
     const req = {
-      params: { id: "2" },
+      params: { id: 2 },
       body: { email: "novo@email.com" },
-      user: { id: 2 },
+      user: { id_user: 2 },
     } as any;
 
     const res = mockResponse();
@@ -69,9 +69,9 @@ describe("updateUser - autorização", () => {
 
   it("bloqueia edição de outro usuário (403)", async () => {
     const req = {
-      params: { id: "2" },
+      params: { id: 2 },
       body: { name: "Novo Nome" },
-      user: { id: 1 },
+      user: { id_user: 1 },
     } as unknown as Request<{ id: string }>;
 
     const res = mockResponse();
@@ -88,9 +88,9 @@ describe("updateUser - autorização", () => {
 
   it("retorna 400 se a senha for fraca", async () => {
     const req = {
-      params: { id: "2" },
+      params: { id: 2 },
       body: { password: "abc" },
-      user: { id: 2 },
+      user: { id_user: 2 },
     } as any;
 
     const res = mockResponse();
@@ -111,9 +111,9 @@ describe("updateUser - autorização", () => {
 
   it("retorna 400 se o CPF for inválido", async () => {
     const req = {
-      params: { id: "2" },
+      params: { id: 2 },
       body: { cpf: "11111111111" },
-      user: { id: 2 },
+      user: { id_user: 2 },
     } as any;
 
     const res = mockResponse();
