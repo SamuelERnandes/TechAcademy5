@@ -1,6 +1,6 @@
-import { Request, Response } from 'express';
-import CollectionModel from '../model/CollectionModel';
-import MovieModel from '../model/MovieModel';
+import { Request, Response } from "express";
+import CollectionModel from "../model/CollectionModel";
+import MovieModel from "../model/MovieModel";
 
 export const getAll = async (req: Request, res: Response) => {
   const { id: id_user } = req.params;
@@ -10,9 +10,9 @@ export const getAll = async (req: Request, res: Response) => {
     include: [
       {
         model: MovieModel,
-        as: 'movies',
+        as: "movies",
         through: { attributes: [] },
-        attributes: ['id_movie', 'title'],
+        attributes: ["id_movie", "title"],
       },
     ],
   });
@@ -25,11 +25,11 @@ export const getCollectionById = async (req: Request, res: Response) => {
 
   const collection = await CollectionModel.findOne({
     where: { id_collection, id_user },
-    include: [{ model: MovieModel, as: 'movies' }],
+    include: [{ model: MovieModel, as: "movies" }],
   });
 
   if (!collection) {
-    return res.status(404).json({ error: 'Collection not found' });
+    return res.status(404).json({ error: "Collection not found" });
   }
 
   res.json(collection);
@@ -40,7 +40,7 @@ export const createCollection = async (req: Request, res: Response) => {
   const { name } = req.body;
 
   if (!name) {
-    return res.status(400).json({ error: 'Name is required' });
+    return res.status(400).json({ error: "Name is required" });
   }
 
   const newCollection = await CollectionModel.create({
@@ -54,25 +54,31 @@ export const createCollection = async (req: Request, res: Response) => {
 export const addMovieToCollection = async (req: Request, res: Response) => {
   const { collectionId } = req.params;
   const { movieId } = req.body;
+  const id_user = req.user?.id_user;
 
   try {
-    const collection = await CollectionModel.findByPk(collectionId);
+    const collection = await CollectionModel.findOne({
+      where: {
+        id_collection: collectionId,
+        id_user,
+      },
+      include: [{ model: MovieModel, as: "movies" }],
+    });
+
     if (!collection) {
-      return res.status(404).json({ error: 'Collection not found' });
+      return res.status(404).json({ error: "Collection not found" });
     }
 
     const movie = await MovieModel.findByPk(movieId);
     if (!movie) {
-      return res.status(404).json({ error: 'Movie not found' });
+      return res.status(404).json({ error: "Movie not found" });
     }
 
-    // Use ID diretamente para evitar problemas de referência
-
-    await collection.addMovie(movie);
-    res.status(200).json({ message: 'Filme adicionado à coleção' });
+    await collection.addMovie(movieId);
+    res.status(200).json({ message: "Filme adicionado à coleção" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Erro ao adicionar filme à coleção' });
+    res.status(500).json({ error: "Erro ao adicionar filme à coleção" });
   }
 };
 
@@ -85,7 +91,7 @@ export const updateCollection = async (req: Request, res: Response) => {
   });
 
   if (!collection) {
-    return res.status(404).json({ error: 'Collection not found' });
+    return res.status(404).json({ error: "Collection not found" });
   }
 
   collection.name = name || collection.name;
@@ -102,7 +108,7 @@ export const deleteCollection = async (req: Request, res: Response) => {
   });
 
   if (!collection) {
-    return res.status(404).json({ error: 'Collection not found' });
+    return res.status(404).json({ error: "Collection not found" });
   }
 
   await collection.destroy();

@@ -18,6 +18,7 @@ export const authMiddleware = (
     const decoded: any = verifyToken(token);
 
     req.user = {
+      id: decoded.id_user,
       id_user: decoded.id_user,
       ...decoded,
     };

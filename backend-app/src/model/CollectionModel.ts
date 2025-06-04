@@ -1,7 +1,7 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/database';
-import MovieModel from './MovieModel';
-import UserModel from './UserModel';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/database";
+import MovieModel from "./MovieModel";
+import UserModel from "./UserModel";
 
 class CollectionModel extends Model {
   id_collection: number | undefined;
@@ -34,30 +34,9 @@ CollectionModel.init(
   },
   {
     sequelize,
-    modelName: 'CollectionModel',
-    tableName: 'collections',
+    modelName: "CollectionModel",
+    tableName: "collections",
   }
 );
-
-CollectionModel.belongsToMany(MovieModel, {
-  through: 'collection_movies',
-  foreignKey: 'id_collection',
-  otherKey: 'id_movie',
-  as: 'movies',
-});
-MovieModel.belongsToMany(CollectionModel, {
-  through: 'collection_movies',
-  foreignKey: 'id_movie',
-  otherKey: 'id_collection',
-  as: 'collections',
-});
-CollectionModel.belongsTo(UserModel, {
-  foreignKey: 'id_user',
-  as: 'user',
-});
-UserModel.hasMany(CollectionModel, {
-  foreignKey: 'id_user',
-  as: 'collections',
-});
 
 export default CollectionModel;

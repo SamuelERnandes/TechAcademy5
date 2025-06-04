@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { Collection } from '@/types/collections';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { toast } from 'sonner';
-import api from '@/services/api';
-import { useAuth } from '@/context/AuthContext';
+import { useEffect, useState } from "react";
+import { Collection } from "@/types/collections";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import api from "@/services/api";
+import { useAuth } from "@/context/AuthContext";
 
 const Collections = () => {
   const [collections, setCollections] = useState<Collection[]>([]);
-  const [newName, setNewName] = useState('');
+  const [newName, setNewName] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editName, setEditName] = useState('');
+  const [editName, setEditName] = useState("");
 
   const [showMoviesModal, setShowMoviesModal] = useState(false);
   const [availableMovies, setAvailableMovies] = useState<
@@ -35,7 +35,7 @@ const Collections = () => {
       }));
       setCollections(formatted);
     } catch {
-      toast.error('Erro ao buscar coleções.');
+      toast.error("Erro ao buscar coleções.");
     }
   };
 
@@ -55,10 +55,10 @@ const Collections = () => {
       };
 
       setCollections((prev) => [...prev, formatted]);
-      setNewName('');
-      toast.success('Coleção criada!');
+      setNewName("");
+      toast.success("Coleção criada!");
     } catch {
-      toast.error('Erro ao criar coleção.');
+      toast.error("Erro ao criar coleção.");
     } finally {
       setLoading(false);
     }
@@ -68,9 +68,9 @@ const Collections = () => {
     try {
       await api.delete(`/users/${user?.id}/collections/${id}`);
       setCollections((prev) => prev.filter((c) => c.idCollection !== id));
-      toast.success('Coleção removida!');
+      toast.success("Coleção removida!");
     } catch {
-      toast.error('Erro ao remover coleção.');
+      toast.error("Erro ao remover coleção.");
     }
   };
 
@@ -81,19 +81,19 @@ const Collections = () => {
       setCollections((prev) =>
         prev.map((c) => (c.idCollection === id ? { ...c, name: editName } : c))
       );
-      toast.success('Coleção atualizada!');
+      toast.success("Coleção atualizada!");
       setEditingId(null);
     } catch {
-      toast.error('Erro ao atualizar coleção.');
+      toast.error("Erro ao atualizar coleção.");
     }
   };
 
   const fetchAvailableMovies = async () => {
     try {
-      const { data } = await api.get('/movies');
+      const { data } = await api.get("/movies");
       setAvailableMovies(data);
     } catch {
-      toast.error('Erro ao buscar filmes disponíveis.');
+      toast.error("Erro ao buscar filmes disponíveis.");
     }
   };
 
@@ -103,11 +103,11 @@ const Collections = () => {
   ) => {
     try {
       await api.post(`/collections/${collectionId}/movies`, { movieId });
-      toast.success('Filme adicionado!');
+      toast.success("Filme adicionado!");
       fetchCollections();
       setShowMoviesModal(false);
     } catch {
-      toast.error('Erro ao adicionar filme.');
+      toast.error("Erro ao adicionar filme.");
     }
   };
 
