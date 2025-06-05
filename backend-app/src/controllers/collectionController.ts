@@ -56,6 +56,8 @@ export const addMovieToCollection = async (req: Request, res: Response) => {
   const { movieId } = req.body;
   const id_user = req.user?.id_user;
 
+  console.log(req.body);
+  console.log("Adding movie to collection:", movieId);
   try {
     const collection = await CollectionModel.findOne({
       where: {
@@ -66,11 +68,13 @@ export const addMovieToCollection = async (req: Request, res: Response) => {
     });
 
     if (!collection) {
+      console.error("Collection not found");
       return res.status(404).json({ error: "Collection not found" });
     }
 
     const movie = await MovieModel.findByPk(movieId);
     if (!movie) {
+      console.log("Movie not found");
       return res.status(404).json({ error: "Movie not found" });
     }
 

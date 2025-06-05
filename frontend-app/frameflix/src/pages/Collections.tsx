@@ -16,7 +16,7 @@ const Collections = () => {
 
   const [showMoviesModal, setShowMoviesModal] = useState(false);
   const [availableMovies, setAvailableMovies] = useState<
-    { id: string; title: string }[]
+    { id_movie: string; title: string }[]
   >([]);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(
     null
@@ -211,13 +211,13 @@ const Collections = () => {
             <ul className="space-y-2 max-h-60 overflow-y-auto">
               {availableMovies.map((movie) => (
                 <li
-                  key={movie.id}
+                  key={movie.id_movie}
                   className="flex justify-between items-center border-b pb-2"
                 >
                   <span className="text-black">{movie.title}</span>
                   <Button
                     onClick={() =>
-                      addMovieToCollection(selectedCollection, movie.id)
+                      addMovieToCollection(selectedCollection, movie.id_movie)
                     }
                   >
                     Adicionar

@@ -1,8 +1,8 @@
 // No frontend (React)
-import { useState, useEffect } from 'react';
-import { Movie } from '@/types/movie';
-import { toast } from 'sonner';
-import api from '@/services/api';
+import { useState, useEffect } from "react";
+import { Movie } from "@/types/movie";
+import { toast } from "sonner";
+import api from "@/services/api";
 
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -11,10 +11,12 @@ const Movies = () => {
 
   const fetchMovies = async () => {
     try {
-      const { data } = await api.get('/movies');
+      console.log(movies);
+      const { data } = await api.get("/movies");
       setMovies(data);
+      console.log(data);
     } catch {
-      toast.error('Erro ao buscar filmes.');
+      toast.error("Erro ao buscar filmes.");
     }
   };
 
@@ -47,7 +49,7 @@ const Movies = () => {
                   {movie.title}
                 </h3>
                 <p className="text-sm text-gray-400">
-                  Nota: {movie.rating ?? '-'} / 5
+                  Nota: {movie.rating ?? "-"} / 5
                 </p>
               </div>
               <button
