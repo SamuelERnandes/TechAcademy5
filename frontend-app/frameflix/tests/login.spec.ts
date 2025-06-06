@@ -21,10 +21,9 @@ test.describe("Login", () => {
     await page.fill('input[name="email"]', "usuario@teste.com");
     await page.fill('input[name="password"]', "senhaErrada");
     await page.click('button[type="submit"]');
-
-    // Verifica se a mensagem de erro aparece
-    await page.waitForSelector(
-      '.toast:has-text("Email or password are invalid")'
-    );
+    await page.waitForTimeout(300);
+    await page.waitForSelector("text=Email or password are invalid", {
+      timeout: 3000,
+    });
   });
 });

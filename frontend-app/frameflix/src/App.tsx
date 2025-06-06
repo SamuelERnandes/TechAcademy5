@@ -20,7 +20,7 @@ const AppRoutes = () => {
   const { authenticated, isAuthLoading } = useAuth();
 
   if (isAuthLoading) {
-    return <p>Carregando autenticação...</p>; // pode trocar por um spinner bonitinho
+    return <p>Carregando autenticação...</p>;
   }
 
   return (
