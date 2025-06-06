@@ -1,15 +1,16 @@
 import { Navigate, Outlet } from "react-router-dom";
 import Drawer from "./ui/drawer";
+
 type PrivateRouteProps = {
-  token: string | null;
+  authenticated: boolean;
   redirectPath?: string;
 };
 
 export const PrivateRouteWrapper = ({
-  token,
+  authenticated,
   redirectPath = "/",
 }: PrivateRouteProps) => {
-  if (!token) {
+  if (!authenticated) {
     return <Navigate to={redirectPath} replace />;
   }
 

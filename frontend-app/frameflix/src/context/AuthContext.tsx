@@ -1,5 +1,11 @@
 import { jwtDecode } from "jwt-decode";
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
 
 type User = {
   id: number | string;
@@ -13,27 +19,42 @@ type AuthContextData = {
   login: (token: string) => void;
   logout: () => void;
   authenticated: boolean;
+  isAuthLoading: boolean;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(() => {
+  const [user, setUser] = useState<User | null>(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return null;
 
-    const decoded: any = jwtDecode(token);
-    return {
-      id: decoded.id_user || decoded.id,
-      name: decoded.name,
-      cpf: decoded.cpf,
-      email: decoded.email,
-    };
-  });
+    if (!token) {
+      setIsAuthLoading(false);
+      return;
+    }
 
-  const [authenticated, setAuthenticated] = useState(() => {
-    return !!localStorage.getItem("token");
-  });
+    try {
+      const decoded: any = jwtDecode(token);
+      const normalizedUser: User = {
+        id: decoded.id_user || decoded.id,
+        name: decoded.name,
+        cpf: decoded.cpf,
+        email: decoded.email,
+      };
+
+      setUser(normalizedUser);
+      setAuthenticated(true);
+    } catch (error) {
+      console.error("Token inválido", error);
+      localStorage.removeItem("token");
+    } finally {
+      setIsAuthLoading(false);
+    }
+  }, []);
 
   const login = (token: string) => {
     const decoded: any = jwtDecode(token);
@@ -56,7 +77,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, authenticated }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, authenticated, isAuthLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

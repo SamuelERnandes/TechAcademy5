@@ -12,14 +12,20 @@ import Favorites from "./pages/Favorites";
 import Rating from "./pages/Rating";
 import MyRatings from "./pages/MyRatings";
 import UserProfile from "./pages/UserProfile";
+import { useAuth } from "./context/AuthContext";
+import { Navigate, Outlet } from "react-router-dom";
 //import Test from "./pages/Test";
 
 const AppRoutes = () => {
-  const token = localStorage.getItem("token");
+  const { authenticated, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return <p>Carregando autenticação...</p>; // pode trocar por um spinner bonitinho
+  }
 
   return (
     <Routes>
-      <Route element={<PrivateRouteWrapper token={token} />}>
+      <Route element={<PrivateRouteWrapper authenticated={authenticated} />}>
         <Route path="/collections" element={<Collections />} />
         <Route path="/movies" element={<Movies />} />
         <Route path="/moviereviews" element={<MovieReviews />} />

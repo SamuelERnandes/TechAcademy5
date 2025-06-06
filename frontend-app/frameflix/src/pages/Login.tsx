@@ -8,6 +8,7 @@ import AuthContext from "@/context/AuthContext";
 import TextInput from "@/components/ui/textinput";
 import Logo from "@/components/ui/logo";
 import api from "@/services/api";
+import { useEffect } from "react";
 
 type ILoginForm = {
   email: string;
@@ -30,10 +31,9 @@ const LoginForm = () => {
           password: values.password,
         });
 
-        authContext.login(data.token);
-        navigate("/movies");
-
+        authContext.login(data.token); // token vai pro localStorage + state
         toast.success("Login realizado com sucesso!");
+        // NÃO redireciona aqui
       } catch (error) {
         if (axios.isAxiosError(error)) {
           toast.error(error?.response?.data?.error || "Erro ao fazer login.");
@@ -44,8 +44,15 @@ const LoginForm = () => {
         setLoading(false);
       }
     },
-    [authContext, navigate]
+    [authContext]
   );
+
+  // Redireciona automaticamente quando estiver autenticado
+  useEffect(() => {
+    if (authContext.authenticated) {
+      navigate("/movies");
+    }
+  }, [authContext.authenticated, navigate]);
 
   return (
     <FormProvider {...form}>
