@@ -1,0 +1,25 @@
+{
+  "name": "techacademy5",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prepare": "husky install",
+    "test:e2e": "cd frontend-app/frameflix && npm run test:e2e"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SamuelERnandes/TechAcademy5.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SamuelERnandes/TechAcademy5/issues"
+  },
+  "homepage": "https://github.com/SamuelERnandes/TechAcademy5#readme",
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
