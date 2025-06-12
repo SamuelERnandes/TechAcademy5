@@ -28,26 +28,26 @@ const Register = () => {
   const onSubmit = async (values: RegisterForm) => {
     if (values.password !== values.confirmPassword) {
       toast.error("As senhas não coincidem");
-
       return;
     }
 
     try {
       await api.post("/users", {
         name: values.name,
-
         email: values.email,
-
         password: values.password,
-
         cpf: values.cpf,
       });
 
       toast.success("Cadastro realizado com sucesso!");
-
       navigate("/login");
     } catch (error) {
-      toast.error("Erro ao cadastrar. Tente novamente.");
+      if (axios.isAxiosError(error)) {
+        const msg = error.response?.data?.error || "Erro ao cadastrar.";
+        toast.error(msg);
+      } else {
+        toast.error("Erro inesperado.");
+      }
     }
   };
 
