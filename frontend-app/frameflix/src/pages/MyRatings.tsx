@@ -79,7 +79,12 @@ const MyRatings = () => {
       <div className="flex flex-col gap-6">
         {ratings.map((r) =>
           editingId === r.id_rating ? (
-            <div key={r.id_rating} className="border p-4 rounded bg-slate-700">
+            <div
+              key={r.id_rating}
+              data-testid="rating-card"
+              className="border p-4 rounded bg-slate-700"
+            >
+              {" "}
               <h2 className="font-semibold">{r.film_title}</h2>
               <Rating value={editedRating} onChange={setEditedRating} />
               <Textarea
@@ -97,7 +102,11 @@ const MyRatings = () => {
               </div>
             </div>
           ) : (
-            <div key={r.id_rating} className="border p-4 rounded bg-slate-800">
+            <div
+              key={r.id_rating}
+              data-testid="rating-card"
+              className="border p-4 rounded bg-slate-800"
+            >
               <h2 className="font-semibold">{r.film_title}</h2>
               <p className="text-sm text-gray-400">Nota: {r.rating}/5</p>
               <p className="text-gray-300">{r.comment}</p>

@@ -40,7 +40,11 @@ const Collections = () => {
   };
 
   const createCollection = async () => {
-    if (!newName.trim()) return;
+    if (!newName.trim()) {
+      toast.error("Nome da coleção é obrigatório");
+      return;
+    }
+
     try {
       setLoading(true);
       const { data } = await api.post(`/users/${user?.id}/collections`, {

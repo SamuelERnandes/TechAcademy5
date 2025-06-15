@@ -13,6 +13,7 @@ const Rating: React.FC<RatingProps> = ({ value, onChange }) => {
           key={star}
           type="button"
           onClick={() => onChange(star)}
+          data-testid={`star-${star}`}
           className={`p-1 ${
             value >= star ? "text-yellow-400" : "text-slate-600"
           }`}
