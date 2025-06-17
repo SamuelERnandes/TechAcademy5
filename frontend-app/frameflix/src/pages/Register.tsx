@@ -1,24 +1,22 @@
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider } from 'react-hook-form';
 
-import { RegisterForm } from "@/types/auth";
+import { RegisterForm } from '@/types/auth';
 
-import { Input } from "@/components/ui/input";
+import { Button } from '@/components/ui/button';
 
-import { Button } from "@/components/ui/button";
+import { toast } from 'sonner';
 
-import { toast } from "sonner";
+import axios from 'axios';
 
-import axios from "axios";
+import { useNavigate, Link } from 'react-router-dom';
 
-import { useNavigate, Link } from "react-router-dom";
+import TextInput from '@/components/ui/textinput';
 
-import TextInput from "@/components/ui/textinput";
+import Logo from '@/components/ui/logo';
 
-import Logo from "@/components/ui/logo";
+import api from '@/services/api';
 
-import api from "@/services/api";
-
-import { isValidCPF } from "@/utils/cpfValidator";
+import { isValidCPF } from '@/utils/cpfValidator';
 
 const Register = () => {
   const form = useForm<RegisterForm>();
@@ -27,26 +25,26 @@ const Register = () => {
 
   const onSubmit = async (values: RegisterForm) => {
     if (values.password !== values.confirmPassword) {
-      toast.error("As senhas não coincidem");
+      toast.error('As senhas não coincidem');
       return;
     }
 
     try {
-      await api.post("/users", {
+      await api.post('/users', {
         name: values.name,
         email: values.email,
         password: values.password,
         cpf: values.cpf,
       });
 
-      toast.success("Cadastro realizado com sucesso!");
-      navigate("/login");
+      toast.success('Cadastro realizado com sucesso!');
+      navigate('/login');
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        const msg = error.response?.data?.error || "Erro ao cadastrar.";
+        const msg = error.response?.data?.error || 'Erro ao cadastrar.';
         toast.error(msg);
       } else {
-        toast.error("Erro inesperado.");
+        toast.error('Erro inesperado.');
       }
     }
   };
@@ -61,7 +59,7 @@ const Register = () => {
         <h1 className="text-4xl font-bold mb-2 text-center">Criar conta</h1>
 
         <p className="text-sm text-gray-400 mb-8 text-center">
-          Já tem uma conta?{" "}
+          Já tem uma conta?{' '}
           <Link to="/login" className="text-teal-400 hover:underline">
             Entrar
           </Link>
@@ -75,28 +73,28 @@ const Register = () => {
             <TextInput
               name="name"
               label="Nome"
-              rules={{ required: "Nome obrigatório" }}
+              rules={{ required: 'Nome obrigatório' }}
             />
 
             <TextInput
               name="email"
               label="E-mail"
               type="email"
-              rules={{ required: "E-mail obrigatório" }}
+              rules={{ required: 'E-mail obrigatório' }}
             />
 
             <TextInput
               name="password"
               label="Senha"
               type="password"
-              rules={{ required: "Senha obrigatória" }}
+              rules={{ required: 'Senha obrigatória' }}
             />
 
             <TextInput
               name="confirmPassword"
               label="Confirmar senha"
               type="password"
-              rules={{ required: "Confirmação obrigatória" }}
+              rules={{ required: 'Confirmação obrigatória' }}
             />
 
             <TextInput
@@ -104,9 +102,9 @@ const Register = () => {
               label="CPF"
               type="text"
               rules={{
-                required: "CPF obrigatório",
+                required: 'CPF obrigatório',
                 validate: (value: string) =>
-                  isValidCPF(value) || "CPF inválido",
+                  isValidCPF(value) || 'CPF inválido',
               }}
             />
 

@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
-import { MovieReview } from "@/types/moviereview";
-import axios from "axios";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import api from "@/services/api";
+import { useEffect, useState } from 'react';
+import { MovieReview } from '@/types/moviereview';
+import axios from 'axios';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import api from '@/services/api';
 
 const MovieReviews = () => {
   const [reviews, setReviews] = useState<MovieReview[]>([]);
-  const [loading, setLoading] = useState(false);
 
   const fetchReviews = async () => {
     try {
-      const { data } = await api.get("/reviews");
+      const { data } = await api.get('/reviews');
       setReviews(data);
     } catch {
-      toast.error("Erro ao buscar avaliações.");
+      toast.error('Erro ao buscar avaliações.');
     }
   };
 
@@ -22,9 +21,9 @@ const MovieReviews = () => {
     try {
       await axios.delete(`/reviews/${id}`);
       setReviews((prev) => prev.filter((r) => r.id !== id));
-      toast.success("Avaliação removida!");
+      toast.success('Avaliação removida!');
     } catch {
-      toast.error("Erro ao remover a avaliação.");
+      toast.error('Erro ao remover a avaliação.');
     }
   };
 

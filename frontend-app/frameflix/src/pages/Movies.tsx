@@ -1,8 +1,7 @@
-// No frontend (React)
-import { useState, useEffect } from "react";
-import { Movie } from "@/types/movie";
-import { toast } from "sonner";
-import api from "@/services/api";
+import { useState, useEffect } from 'react';
+import { Movie } from '@/types/movie';
+import { toast } from 'sonner';
+import api from '@/services/api';
 
 const Movies = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -11,12 +10,10 @@ const Movies = () => {
 
   const fetchMovies = async () => {
     try {
-      console.log(movies);
-      const { data } = await api.get("/movies");
+      const { data } = await api.get('/movies');
       setMovies(data);
-      console.log(data);
     } catch {
-      toast.error("Erro ao buscar filmes.");
+      toast.error('Erro ao buscar filmes.');
     }
   };
 
@@ -26,6 +23,7 @@ const Movies = () => {
 
   const handleMovieClick = (movie: Movie) => {
     setSelectedMovie(movie);
+    setShowModal(true);
   };
 
   return (
@@ -39,7 +37,7 @@ const Movies = () => {
             className="bg-slate-900 rounded-xl shadow-lg overflow-hidden transition transform hover:scale-105 hover:shadow-xl"
           >
             <img
-              src={`http://localhost:3000/assets/public/posters/${movie.poster}`}
+              src={`https://frameflix.local/public/posters/${movie.poster}`}
               alt={movie.title}
               className="w-full h-64 object-cover"
             />
@@ -49,14 +47,11 @@ const Movies = () => {
                   {movie.title}
                 </h3>
                 <p className="text-sm text-gray-400">
-                  Nota: {movie.rating ?? "-"} / 5
+                  Nota: {movie.rating ?? '-'} / 5
                 </p>
               </div>
               <button
-                onClick={() => {
-                  setSelectedMovie(movie);
-                  setShowModal(true);
-                }}
+                onClick={() => handleMovieClick(movie)}
                 className="mt-3 bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded transition w-full"
               >
                 Assistir
@@ -80,7 +75,7 @@ const Movies = () => {
             </h2>
             <video controls className="w-full rounded">
               <source
-                src={`http://localhost:3000/assets/public/videos/${selectedMovie.videoFile}`}
+                src={`https://frameflix.local/public/videos/${selectedMovie.videoFile}`}
                 type="video/mp4"
               />
               Seu navegador não suporta vídeos HTML5.
