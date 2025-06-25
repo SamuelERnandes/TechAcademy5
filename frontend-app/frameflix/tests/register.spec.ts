@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const baseUrl = "http://localhost:5173";
+const baseUrl = "https://frameflix.local";
 
 function generateValidCPF(): string {
   const rand = () => Math.floor(Math.random() * 9);

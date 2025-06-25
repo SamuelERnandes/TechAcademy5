@@ -1,17 +1,17 @@
-import { BrowserRouter, Route, Routes } from 'react-router';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import { Toaster } from './components/ui/sonner';
-import { PrivateRouteWrapper } from './components/PrivateRoute';
-import { AuthProvider } from './context/AuthContext';
-import Movies from './pages/Movies';
-import MovieReviews from './pages/MovieReviews';
-import Collections from './pages/Collections';
+import { BrowserRouter, Route, Routes } from "react-router";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import { Toaster } from "./components/ui/sonner";
+import { PrivateRouteWrapper } from "./components/PrivateRoute";
+import { AuthProvider } from "./context/AuthContext";
+import Movies from "./pages/Movies";
+import MovieReviews from "./pages/MovieReviews";
+import Collections from "./pages/Collections";
 
-import Rating from './pages/Rating';
-import MyRatings from './pages/MyRatings';
-import UserProfile from './pages/UserProfile';
-import { useAuth } from './context/AuthContext';
+import Rating from "./pages/Rating";
+import MyRatings from "./pages/MyRatings";
+import UserProfile from "./pages/UserProfile";
+import { useAuth } from "./context/AuthContext";
 
 const AppRoutes = () => {
   const { authenticated, isAuthLoading } = useAuth();
@@ -42,8 +42,14 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            style: { zIndex: 9999 },
+          }}
+        />
+
         <AppRoutes />
-        <Toaster />
       </BrowserRouter>
     </AuthProvider>
   );

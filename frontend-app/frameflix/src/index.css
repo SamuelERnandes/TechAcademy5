@@ -184,3 +184,12 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+/* Garante que o Toaster da lib Sonner apareça corretamente */
+[data-sonner-toast] {
+  position: fixed !important;
+  right: 1rem !important;
+  top: 1rem !important;
+  z-index: 9999 !important;
+  max-width: 320px;
+}

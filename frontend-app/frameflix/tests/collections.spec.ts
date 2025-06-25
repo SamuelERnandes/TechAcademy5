@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const baseUrl = "http://localhost:5173";
+const baseUrl = "https://frameflix.local";
 
 test.describe("Coleções - Criar, Editar e Excluir", () => {
   test("deve criar e editar uma coleção com sucesso", async ({ page }) => {

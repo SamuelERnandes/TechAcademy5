@@ -20,10 +20,9 @@ const Input = forwardRef(
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       if (typeof onChange === "function") {
         if (onChange.length === 1) {
-          const arg = (onChange as any).toString().match(/\(\s*(\w+)/)?.[1];
-          if (arg === "e") {
+          try {
             (onChange as (e: ChangeEvent<HTMLInputElement>) => void)(e);
-          } else {
+          } catch {
             (onChange as (value: string) => void)(e.target.value);
           }
         }

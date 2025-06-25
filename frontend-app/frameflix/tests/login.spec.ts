@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test.describe("Login", () => {
-  const baseUrl = "http://localhost:5173";
+  const baseUrl = "https://frameflix.local";
 
   test("deve fazer login com sucesso", async ({ page }) => {
     await page.goto(`${baseUrl}/`);
